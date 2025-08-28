@@ -25,13 +25,13 @@ class RolePermissionSeeder extends Seeder
             RoleName::ADMIN->value => [
                 'permissions' => [
                     'service' => ['viewAll', 'view', 'create', 'update', 'delete'],
-                    'booking' => ['viewAny', 'view', 'update', 'delete'],
+                    'booking' => ['viewAll', 'view', 'update', 'delete'],
                 ],
             ],
             RoleName::CUSTOMER->value => [
                 'permissions' => [
-                    'service' => ['viewAny', 'view'],
-                    'booking' => ['viewAny', 'view', 'create', 'update', 'delete'],
+                    'service' => ['viewAll', 'view'],
+                    'booking' => ['viewAll', 'view', 'create', 'update', 'delete'],
                 ],
             ],
         ];

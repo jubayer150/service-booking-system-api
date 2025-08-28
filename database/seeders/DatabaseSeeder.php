@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         // Seeder calling order matters
         $this->call([
             RolePermissionSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }
