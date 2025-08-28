@@ -27,7 +27,7 @@ final class RegistrationController
 
         return $this->responseSuccess('User registration successful.', [
             'user' => UserResource::make($user),
-            'access_token' => $user->token,
+            'access_token' => $service->createAccessToken($user),
         ], Response::HTTP_CREATED);
     }
 }

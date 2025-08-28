@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware(['auth.sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [\App\Http\Controllers\Api\Auth\AuthenticateController::class, 'destroy']);
 });
 

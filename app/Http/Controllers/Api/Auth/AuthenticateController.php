@@ -35,7 +35,8 @@ final class AuthenticateController
 
     public function destroy(Request $request): JsonResponse
     {
+        $this->service->logout($request->boolean('revoke_all_tokens'));
 
-        return $this->responseSuccess($this->service->logout($request->boolean('revoke_all_tokens')), statusCode: Response::HTTP_NO_CONTENT);
+        return $this->responseSuccess('Logout successful.');
     }
 }

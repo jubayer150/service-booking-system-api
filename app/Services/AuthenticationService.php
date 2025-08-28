@@ -25,8 +25,6 @@ class AuthenticationService
 
         // @Todo: Implement role assignment logic.
 
-        $user->token = $this->createAccessToken($user);
-
         return $user;
     }
 
@@ -35,7 +33,7 @@ class AuthenticationService
         return $user->createToken('access_token')->plainTextToken;
     }
 
-    public function logout(bool $revokeAllTokens = false): string
+    public function logout(bool $revokeAllTokens = false): void
     {
         $user = Auth::user();
 
@@ -43,11 +41,10 @@ class AuthenticationService
             
             $user->tokens()->delete();
 
-            return 'Log out from all devices successful.';
-        }
-        
-        $user->currentAccessToken()->delete();
+        } else {
 
-        return 'Log out successful.';
+            $user->currentAccessToken()->delete();
+
+        }
     }
 }
