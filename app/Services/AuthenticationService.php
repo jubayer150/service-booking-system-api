@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\RoleName;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -23,7 +24,7 @@ class AuthenticationService
     {
         $user = User::create($data);
 
-        // @Todo: Implement role assignment logic.
+        $user->assignRole(RoleName::CUSTOMER->value);
 
         return $user;
     }
@@ -38,7 +39,7 @@ class AuthenticationService
         $user = Auth::user();
 
         if ($revokeAllTokens) {
-            
+
             $user->tokens()->delete();
 
         } else {
