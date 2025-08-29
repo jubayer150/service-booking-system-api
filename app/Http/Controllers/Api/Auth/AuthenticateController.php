@@ -30,7 +30,7 @@ final class AuthenticateController
         return $this->responseSuccess('Login successful', [
             'user' => UserResource::make($user),
             'access_token' => $this->service->createAccessToken($user),
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     public function destroy(Request $request): JsonResponse

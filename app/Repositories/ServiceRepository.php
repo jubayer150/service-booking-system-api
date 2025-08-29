@@ -9,48 +9,31 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceRepository
 {
-    public function getAll(?Request $request)
+    public function getAll(array $filters)
     {
         $services = Service::query()
-            ->when(! Auth::user()->hasAnyRole([RoleName::ADMIN]), function ($query) {
+            ->when(!Auth::user()->hasAnyRole([RoleName::ADMIN]), function ($query) {
                 $query->active();
+            })
+            ->when(isset($filters['status']), function ($query) use ($filters) {
+                $query->where('status', $filters['status']);
+            })
+            ->when(isset($filters['search']), function ($query) use ($filters) {
+                $query->search($filters['search']);
+            })
+            ->when(isset($filters['sort_by']), function ($query) use ($filters) {
+                $query->orderBy($filters['sort_by'], $filters['sort_dir'] ?? 'asc');
             });
 
-        if ($request) {
-            $services->when($request->filled('status'), function ($query) use ($request) {
-                $query->where('status', $request->query('status'));
-            })
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where(function ($query) use ($request) {
-                    $query->where('name', 'like', "%{$request->query('search')}%")
-                        ->orWhere('description', 'like', "%{$request->query('search')}%");
-                });
-            })
-            ->when($request->filled('sort_by'), function ($query) use ($request) {
-                $query->orderBy($request->query('sort_by'), $request->query('sort_dir', 'asc'));
-            });
-
-            if ($request->boolean('get_all')) {
-                return $services->get();
-            }
+        if ($filters['paginate'] ?? false) {
+            return $services->paginate($filters['per_page'] ?? 10);
         }
 
-        return $services->paginate($request->query('per_page', 10));
+        return $services->get();
     }
     
     public function create(array $data): Service
     {
         return Service::create($data);
-    }
-
-    public function update(Service $service, array $data): Service
-    {
-        $service->update($data);
-        return $service;
-    }
-
-    public function delete(Service $service): void
-    {
-        $service->delete();
     }
 }

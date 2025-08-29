@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use App\Repositories\ServiceRepository;
+use App\Services\ServiceManagerService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,16 +19,14 @@ final class ServiceController
 {
     use ApiResponse;
 
-    public function __construct(private ServiceRepository $serviceRepository) {}
-
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(ServiceRepository $serviceRepository, Request $request): JsonResponse
     {
         Gate::authorize('viewAny', Service::class);
 
-        $services = $this->serviceRepository->getAll($request);
+        $services = $serviceRepository->getAll($request->query());
 
         return $this->responseSuccess(data: [
             'services' => ServiceResource::collection($services)->resource,
@@ -37,11 +36,11 @@ final class ServiceController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ServiceRequest $request): JsonResponse
+    public function store(ServiceRepository $serviceRepository, ServiceRequest $request): JsonResponse
     {
         Gate::authorize('create', Service::class);
 
-        $service = $this->serviceRepository->create($request->validated());
+        $service = $serviceRepository->create($request->validated());
 
         return $this->responseSuccess('Service created successfully.', [
             'service' => ServiceResource::make($service),
@@ -51,23 +50,19 @@ final class ServiceController
     /**
      * Display the specified resource.
      */
-    public function show(Service $service): JsonResponse
+    public function show(): void
     {
-        Gate::authorize('view', $service);
-
-        return $this->responseSuccess(data:[
-            'service' => ServiceResource::make($service),
-        ]);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ServiceRequest $request, Service $service): JsonResponse
+    public function update(ServiceManagerService $serviceManagerService, ServiceRequest $request, Service $service): JsonResponse
     {
         Gate::authorize('update', $service);
 
-        $service = $this->serviceRepository->update($service, $request->validated());
+        $service = $serviceManagerService->update($service, $request->validated());
 
         return $this->responseSuccess('Service updated successfully.', [
             'service' => ServiceResource::make($service),
@@ -77,13 +72,11 @@ final class ServiceController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service): JsonResponse
+    public function destroy(ServiceManagerService $serviceManagerService, Service $service): JsonResponse
     {
         Gate::authorize('delete', $service);
 
-        abort_if($service->bookings()->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'Cannot delete service with existing bookings.');
-
-        $this->serviceRepository->delete($service);
+        $serviceManagerService->delete($service);
 
         return $this->responseSuccess('Service deleted successfully.');
     }

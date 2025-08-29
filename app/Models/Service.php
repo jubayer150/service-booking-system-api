@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ServiceStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -23,9 +24,17 @@ class Service extends Model
         ];
     }
 
-    public function isActive(): bool
+    public function scopeSearch(Builder $query, string $keyword): Builder
     {
-        return $this->status === ServiceStatus::ACTIVE;
+        return $query->where(function (Builder $query) use ($keyword) {
+            $query->where('name', 'like', "%{$keyword}%")
+                  ->orWhere('description', 'like', "%{$keyword}%");
+        });
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', ServiceStatus::ACTIVE);
     }
 
     public function bookings(): HasMany

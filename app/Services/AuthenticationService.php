@@ -6,8 +6,6 @@ namespace App\Services;
 
 use App\Enums\RoleName;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Auth;
 
 class AuthenticationService

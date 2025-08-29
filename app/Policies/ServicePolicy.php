@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
-use App\Enums\RoleName;
-use App\Enums\ServiceStatus;
 use App\Models\Service;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ServicePolicy
 {
@@ -16,22 +15,6 @@ class ServicePolicy
     public function viewAny(User $user): bool
     {
         return $user->can('service.viewAll');
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Service $service): bool
-    {
-        if (! $user->can('service.view')) {
-            return false;
-        }
-
-        if ($user->hasAnyRole([RoleName::ADMIN])) {
-            return true;
-        }
-
-        return $service->status === ServiceStatus::ACTIVE;
     }
 
     /**

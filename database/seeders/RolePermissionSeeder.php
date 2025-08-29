@@ -24,14 +24,14 @@ class RolePermissionSeeder extends Seeder
         $rolesWithPermissions = [
             RoleName::ADMIN->value => [
                 'permissions' => [
-                    'service' => ['viewAll', 'view', 'create', 'update', 'delete'],
-                    'booking' => ['viewAll', 'view', 'update', 'delete'],
+                    'service' => ['viewAll', 'create', 'update', 'delete'],
+                    'booking' => ['viewAll'],
                 ],
             ],
             RoleName::CUSTOMER->value => [
                 'permissions' => [
-                    'service' => ['viewAll', 'view'],
-                    'booking' => ['viewAll', 'view', 'create', 'update', 'delete'],
+                    'service' => ['viewAll'],
+                    'booking' => ['viewAll', 'create'],
                 ],
             ],
         ];
