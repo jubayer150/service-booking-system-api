@@ -10,14 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticationService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function register(array $data): User
     {
         $user = User::create($data);

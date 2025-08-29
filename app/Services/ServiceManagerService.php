@@ -9,20 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ServiceManagerService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        
-    }
-
     public function update(Service $service, array $data): Service
     {
         $service->fill($data);
 
         if ($service->isDirty('price')) {
-            //@TODO: Notify customers about price change
+            //@TODO: Notify customers who have pending service about price change
         }
         
         $service->save();

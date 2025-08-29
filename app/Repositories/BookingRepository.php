@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Enums\RoleName;
-use App\Models\Service;
+use App\Models\Booking;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
-class ServiceRepository
+class BookingRepository
 {
-    public function getAll(array $filters): Collection|LengthAwarePaginator
+    public function getAll(array $filters = []): Collection|LengthAwarePaginator
     {
-        $services = Service::query()
+        $bookings = Booking::query()
+            ->when(Auth::user()->hasAnyRole([RoleName::ADMIN]), fn($q) => $q->with('user'))
+            ->with(['service'])
             ->when(! Auth::user()->hasAnyRole([RoleName::ADMIN]), function ($query) {
-                $query->active();
+                $query->forCustomer();
             })
             ->when(isset($filters['status']), function ($query) use ($filters) {
                 $query->where('status', $filters['status']);
@@ -30,14 +31,9 @@ class ServiceRepository
             });
 
         if ($filters['paginate'] ?? false) {
-            return $services->paginate($filters['per_page'] ?? 10);
+            return $bookings->paginate($filters['per_page'] ?? 10);
         }
 
-        return $services->get();
-    }
-    
-    public function create(array $data): Service
-    {
-        return Service::create($data);
+        return $bookings->get();
     }
 }

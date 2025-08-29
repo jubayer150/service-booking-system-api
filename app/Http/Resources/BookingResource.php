@@ -7,7 +7,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceResource extends JsonResource
+class BookingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +18,9 @@ class ServiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'price' => $this->price,
+            'user' => new UserResource($this->whenLoaded('user')),
+            'service' => new ServiceResource($this->whenLoaded('service')),
+            'booking_date' => $this->booking_date,
             'status' => [
                 'value' => $this->status->value,
                 'label' => $this->status->label(),
