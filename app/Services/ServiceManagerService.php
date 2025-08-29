@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Service;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class ServiceManagerService
 {
@@ -24,7 +25,10 @@ class ServiceManagerService
 
     public function delete(Service $service): void
     {
-        abort_if($service->bookings()->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'Cannot delete service with existing bookings.');
+        throw_if(
+        $service->bookings()->exists(),
+        new UnprocessableEntityHttpException('Cannot delete service with existing bookings.')
+        );
 
         $service->delete();
     }
