@@ -26,7 +26,7 @@ class ServiceRepository
                 $query->search($filters['search']);
             })
             ->when(isset($filters['sort_by']), function ($query) use ($filters) {
-                $query->orderBy($filters['sort_by'], $filters['sort_dir'] ?? 'asc');
+                $query->sortBy($filters['sort_by'], $filters['sort_dir'] ?? 'asc');
             });
 
         if ($filters['paginate'] ?? false) {

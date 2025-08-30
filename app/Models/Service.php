@@ -37,6 +37,17 @@ class Service extends Model
         return $query->where('status', ServiceStatus::ACTIVE);
     }
 
+    public function scopeSortBy(Builder $query, ?string $column, string $direction = 'asc'): Builder
+    {
+        $allowed = ['id', 'status', 'price', 'created_at'];
+
+        if ($column && in_array($column, $allowed, true)) {
+            return $query->orderBy($column, strtolower($direction) === 'desc' ? 'desc' : 'asc');
+        }
+
+        return $query;
+    }
+
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);

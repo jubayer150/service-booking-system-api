@@ -45,6 +45,17 @@ class Booking extends Model
         });
     }
 
+    public function scopeSortBy(Builder $query, ?string $column = null, string $direction = 'asc'): Builder
+    {
+        $allowed = ['id', 'status', 'booking_date', 'created_at'];
+
+        if ($column && in_array($column, $allowed, true)) {
+            return $query->orderBy($column, strtolower($direction) === 'desc' ? 'desc' : 'asc');
+        }
+
+        return $query;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
