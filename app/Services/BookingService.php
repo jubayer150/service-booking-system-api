@@ -19,8 +19,6 @@ class BookingService
             'status' => BookingStatus::PENDING->value,
         ]);
 
-        // dd($booking);
-
         //@TODO: Send notification to user and admin
         
         return $booking;

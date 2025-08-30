@@ -1,0 +1,555 @@
+{
+	"info": {
+		"_postman_id": "bbea1733-99f4-474b-9bd8-d7211556351f",
+		"name": "ServiceBookingSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46933241"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"pm.collectionVariables.set('access_token', res.data.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Rahim Karim",
+									"description": "['required', 'string', 'max:64']",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "karim@example.com",
+									"description": "['required', 'email', 'max:255', 'unique:users']",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"description": "['required', Rules\\Password::defaults()]",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "password",
+									"description": "['required', Rules\\Password::defaults()]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_url}}/register",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();",
+									"pm.collectionVariables.set('access_token', res.data.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "admin@example.com",
+									"description": "['required', 'email']",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"description": "['required', 'string']",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_url}}/login",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('access_token', null);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "revoke_all_tokens",
+									"value": "1",
+									"description": "['boolean']",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_url}}/logout",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "View All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local_url}}/services?status=1",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"services"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "hello",
+									"description": "['string']",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"description": "[ServiceStatus::class]"
+								},
+								{
+									"key": "sort_by",
+									"value": "created_at",
+									"description": "[measurable existing fields]",
+									"disabled": true
+								},
+								{
+									"key": "sort_dir",
+									"value": "desc",
+									"description": "[in: asc, desc]",
+									"disabled": true
+								},
+								{
+									"key": "paginate",
+									"value": "1",
+									"description": "['boolean']",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Sample service",
+									"description": "['required', 'string', 'max:255']",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Sample description",
+									"description": "['required', 'string', 'max:1000']",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "10.00",
+									"description": "['required', 'numeric', 'min:0']",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"description": "[Rule::enum(ServiceStatus::class)]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_url}}/services",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Sample service",
+									"description": "['string', 'max:255']",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "Sample description",
+									"description": "['string', 'max:1000']",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price",
+									"value": "10.0",
+									"description": "['numeric', 'min:0']",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"description": "[Rule::enum(ServiceStatus::class)]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_url}}/services/2",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"services",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local_url}}/services/2",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"services",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking",
+			"item": [
+				{
+					"name": "View All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local_url}}/bookings",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "service",
+									"description": "['string']",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"description": "[BookingStatus::class]",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "created_at",
+									"description": "[measurable existing fields]",
+									"disabled": true
+								},
+								{
+									"key": "sort_dir",
+									"value": "desc",
+									"description": "[in: asc, desc]",
+									"disabled": true
+								},
+								{
+									"key": "paginate",
+									"value": "1",
+									"description": "['boolean']",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "service_id",
+									"value": "1",
+									"description": "['required', 'integer', 'exists:services,id', 'active']",
+									"type": "text"
+								},
+								{
+									"key": "booking_date",
+									"value": "2025-09-02",
+									"description": "['required', 'date_format:Y-mm-ddd', 'after_or_equal:today']",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local_url}}/bookings",
+							"host": [
+								"{{local_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local_url",
+			"value": "http://service-booking-system-api.test/api",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
+		}
+	]
+}
